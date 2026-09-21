@@ -9,9 +9,12 @@ export class Library<T extends { id: string }> {
     this.items.push(item);
   }
 
-  remove(id: string): boolean {
+  remove(id: string, validator?: (item: T) => boolean): boolean {
     const index = this.items.findIndex((item) => item.id === id);
     if (index !== -1) {
+      if (validator && !validator(this.items[index])) {
+        return false;
+      }
       this.items.splice(index, 1);
       return true;
     }
